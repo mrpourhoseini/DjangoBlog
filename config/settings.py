@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,7 +37,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    "blog.apps.BlogConfig",
+    "apps.blog.apps.BlogConfig",
+    "apps.account.apps.AccountConfig",
 ]
 
 MIDDLEWARE = [
