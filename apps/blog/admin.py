@@ -1,4 +1,5 @@
 from django.contrib import admin, messages
+from django.utils.html import format_html
 from django.utils.translation import ngettext
 
 from apps.blog.models import Category, Post, Comment, Tag
@@ -35,7 +36,7 @@ def make_draft(self, request, queryset):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('author', 'title', 'category_to_str', 'slug', 'thumbnail', 'status')
+    list_display = ('author', 'title', 'category_to_str', 'tag_to_str', 'slug', 'thumbnail_tag', 'status')
     list_filter = ('author', 'status', 'published_at')
     search_fields = ('title', 'content')
     prepopulated_fields = {'slug': ('title',)}

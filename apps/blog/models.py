@@ -36,7 +36,7 @@ class Category(models.Model):
 
 class Tag(models.Model):
     title = models.CharField(max_length=75, unique=True)
-    slug = models.SlugField(max_length=100)
+    slug = models.SlugField(max_length=75, unique=True)
     content = models.TextField(max_length=400)
 
     def __str__(self):
@@ -57,8 +57,8 @@ class Post(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     summary = models.TextField()
     content = models.TextField()
-    tag = models.ManyToManyField(Tag, null=True, blank=True)
-    thumbnail = models.ImageField(upload_to="images/", null=True, blank=True)
+    tag = models.ManyToManyField(Tag)
+    thumbnail = models.ImageField(upload_to="media/images/")
     status = models.CharField(max_length=7, choices=STATUS_CHOICES)
     published_at = models.DateTimeField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -73,12 +73,19 @@ class Post(models.Model):
         return self.title
 
     def thumbnail_tag(self):
-        return format_html(f"<img width=100 height=70 style='border-radius: 5px;' src='{self.thumbnail.url}'>")
+        return format_html(f"<img width=75 style='border-radius: 5px;' src='{self.thumbnail.url}'>")
+
+    thumbnail_tag.short_description = "Thumbnail"
 
     def category_to_str(self):
         return "، ".join([category.title for category in self.category.active()])
 
     category_to_str.short_description = "Category"
+
+    def tag_to_str(self):
+        return "، ".join([tag.title for tag in self.tag.all()])
+
+    tag_to_str.short_description = "Tag(s)"
 
 
 class Comment(models.Model):
