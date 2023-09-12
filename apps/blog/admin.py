@@ -1,18 +1,16 @@
 from django.contrib import admin, messages
 from django.utils.translation import ngettext
 
-from apps.blog.models import Category, Post
+from apps.blog.models import Category, Post, Comment, Tag
 
 
 # Register your models here.
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug', 'parent', 'status')
     list_filter = (['status'])
     search_fields = ('title', 'slug')
     prepopulated_fields = {'slug': ('title',)}
-
-
-admin.site.register(Category, CategoryAdmin)
 
 
 @admin.action(description="Mark selected posts as published")
@@ -35,6 +33,7 @@ def make_draft(self, request, queryset):
     ) % updated, messages.SUCCESS)
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ('author', 'title', 'category_to_str', 'slug', 'thumbnail', 'status')
     list_filter = ('author', 'status', 'published_at')
@@ -49,4 +48,25 @@ class PostAdmin(admin.ModelAdmin):
         return super(PostAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
 
 
-admin.site.register(Post, PostAdmin)
+@admin.action(description="Mark selected comments as published")
+def approve_comments(self, request, queryset):
+    updated = queryset.update(published=True)
+    self.message_user(request, ngettext(
+        '%d comment was successfully marked as published.',
+        '%d comments were successfully marked as published.',
+        updated,
+    ) % updated, messages.SUCCESS)
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'post', 'content', 'created_at', 'published')
+    list_filter = ('published', 'created_at')
+    search_fields = ('post', 'user', 'content')
+    actions = [approve_comments]
+
+
+@admin.register(Tag)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('title', 'content')
+    search_fields = ('title', 'content')

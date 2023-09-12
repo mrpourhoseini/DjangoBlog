@@ -34,6 +34,18 @@ class Category(models.Model):
     objects = CategoryManager()
 
 
+class Tag(models.Model):
+    title = models.CharField(max_length=75, unique=True)
+    slug = models.SlugField(max_length=100)
+    content = models.TextField(max_length=400)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ('title',)
+
+
 class Post(models.Model):
     STATUS_CHOICES = (
         ("Publish", "published post"),
@@ -45,6 +57,7 @@ class Post(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     summary = models.TextField()
     content = models.TextField()
+    tag = models.ManyToManyField(Tag, null=True, blank=True)
     thumbnail = models.ImageField(upload_to="images/", null=True, blank=True)
     status = models.CharField(max_length=7, choices=STATUS_CHOICES)
     published_at = models.DateTimeField(default=timezone.now)
@@ -66,3 +79,18 @@ class Post(models.Model):
         return "، ".join([category.title for category in self.category.active()])
 
     category_to_str.short_description = "Category"
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userComments')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='postComments')
+    published = models.BooleanField(default=False)
+    content = models.TextField(max_length=400)
+    published_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user} commented for {self.post.title} : {self.content[:20]}'
+
+    class Meta:
+        ordering = ('-created_at',)
