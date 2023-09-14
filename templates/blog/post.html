@@ -30,7 +30,7 @@
 
             <div class="grid md:grid-cols-4 gap-8">
 
-                <div class="md:col-span-3 rounded-lg p-8">
+                <div class="md:col-span-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8">
 
                     <div class="flex items-center space-x-4 mb-4">
 
@@ -56,6 +56,52 @@
                             </a>
                         {% endfor %}
                     </div>
+
+                {# Comments #}
+
+                <section class="dark:bg-gray-900 py-8 lg:py-8 antialiased">
+                    <div class="mx-auto px-4">
+                    <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion ({{ comments.count }})</h2>
+                    </div>
+                    <form class="mb-2">
+                    <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                        <label for="comment" class="sr-only">Your comment</label>
+                        <textarea id="comment" rows="6"
+                            class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                            placeholder="Write a comment..." required></textarea>
+                    </div>
+                    <button type="submit"
+                        class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                        Post comment
+                    </button>
+                    </form>
+
+                    {% for comment in comments %}
+                        <hr>
+                        <article class="p-6 text-base rounded-lg dark:bg-gray-900">
+                            <footer class="flex justify-between items-center mb-2">
+                                <div class="flex items-center">
+                                    <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold"><img
+                                            class="mr-2 w-6 h-6 rounded-full"
+                                            {% if comment.user.profile.avatar %}
+                                                src="{{ comment.user.profile.avatar.url }}"
+                                            {% else %}
+                                                src="{% static 'images/default-Profile-Picture.png' %}"
+                                            {% endif %}
+                                            alt="Michael Gough">{{ comment.user.get_full_name }}</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate datetime="2022-02-08"
+                                            title="February 8th, 2022">{{ comment.created_at|date:"d M Y" }}</time></p>
+                                </div>
+                            </footer>
+
+                            <p class="text-gray-500 dark:text-gray-400">{{ comment.content }}</p>
+                        </article>
+
+                    {% endfor %}
+
+                    </div>
+                </section>
 
                 </div>
 
