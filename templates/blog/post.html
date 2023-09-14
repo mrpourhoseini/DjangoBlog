@@ -1,10 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% load static %}
+{% block content %}
+
+    <div class="px-4 mb-4">
+        <h1 class="mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-3xl dark:text-white">{{ post.title }}</h1>
+        <span class="mb-4 bg-blue-100 text-blue-800 text-sm font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+            <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"/>
+            </svg>
+            {{ post.published_at|date:"d M Y" }}
+        </span>
+
+        <div>
+            {% for category in post.category.all %}
+                <a href="#">
+                    <span class="bg-purple-100 text-purple-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">{{ category.title }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <section class="bg-white dark:bg-gray-900">
+        <div class="px-4 mx-auto max-w-screen-xl lg:py-4">
+
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg mb-8">
+                <img class="rounded-lg" src="{{ post.thumbnail.url }}" alt="image description">
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-8">
+
+                <div class="md:col-span-3 rounded-lg p-8">
+
+                    <div class="flex items-center space-x-4 mb-4">
+
+                        {% if post.author.profile.avatar %}
+                            <img class="w-10 h-10 rounded-full" src="{{ post.author.profile.avatar.url }}" alt="">
+                        {% else %}
+                            <img class="w-10 h-10 rounded-full" src="{% static 'images/default-Profile-Picture.png' %}" alt="">
+                        {% endif %}
+
+                        <div class="font-medium dark:text-white">
+                            <a href="#" class="font-bold text-blue-600/100 dark:text-blue-500/100">{{ post.author.get_full_name }}</a>
+                            <div class="font-medium text-gray-500 dark:text-gray-400">Joined in {{ post.author.date_joined|date:"M Y" }}</div>
+                        </div>
+                    </div>
+
+
+                    <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">{{ post.content|linebreaksbr }}</p>
+
+                    <div class="mb-3">
+                        {% for tag in post.tag.all %}
+                            <a href="#">
+                                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">{{ tag.title }}</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <div class="md:col-span-1 rounded-lg">
+                    {% for last_post in last_posts %}
+
+                        <figure class="mb-2 relative max-w-sm transition-all duration-300 cursor-pointer filter grayscale hover:grayscale-0">
+                          <a href="{% url 'post_detail' last_post.slug %}">
+                            <img class="rounded-lg" src="{{ last_post.thumbnail.url }}" alt="image description">
+                          </a>
+                          <figcaption class="absolute px-4 text-lg text-white bottom-6">
+                              <p>{{ last_post.title|slice:":50" }}</p>
+                          </figcaption>
+                        </figure>
+
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

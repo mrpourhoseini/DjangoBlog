@@ -3,17 +3,18 @@
 {% load static %}
 {% block content %}
 
-    <h1 class="mb-4 mt-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-3xl dark:text-white">The Latest in <span class="underline underline-offset-3 decoration-2 decoration-blue-700 dark:decoration-blue-600">Django blog</span></h1>
-
+    <div class="flex justify-center mb-4 mt-4 ">
+        <h1 class="text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-3xl dark:text-white">The Latest in <span class="underline underline-offset-3 decoration-2 decoration-blue-700 dark:decoration-blue-600"> Django blog</span></h1>
+    </div>
 
     <div class="grid mt-8 gap-5 dark:border-gray-700 md:mb-12 md:grid-cols-3 items-center justify-center mx-auto">
     {% for post in posts %}
         <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <a href="#">
+            <a href="{% url 'post_detail' post.slug %}">
                 <img class="rounded-t-lg" src="{{ post.thumbnail.url }}" alt="" />
             </a>
             <div class="p-5">
-                <a href="#">
+                <a href="{% url 'post_detail' post.slug %}">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ post.title|slice:":50" }}</h5>
                 </a>
                 <span class="bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
@@ -42,7 +43,7 @@
                             <div class="font-medium text-gray-500 dark:text-gray-400">Joined in {{ post.author.date_joined|date:"M Y" }}</div>
                         </div>
                     </div>
-                    <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <a href="{% url 'post_detail' post.slug %}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Read more
                          <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
