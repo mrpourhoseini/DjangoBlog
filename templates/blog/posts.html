@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block content %}
+
+    <h1 class="mb-4 mt-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-3xl dark:text-white">The Latest in <span class="underline underline-offset-3 decoration-2 decoration-blue-700 dark:decoration-blue-600">Django blog</span></h1>
+
+
+    <div class="grid mt-8 gap-5 dark:border-gray-700 md:mb-12 md:grid-cols-3 items-center justify-center mx-auto">
+    {% for post in posts %}
+        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <a href="#">
+                <img class="rounded-t-lg" src="{{ post.thumbnail.url }}" alt="" />
+            </a>
+            <div class="p-5">
+                <a href="#">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ post.title|slice:":50" }}</h5>
+                </a>
+                <span class="bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                    <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"/>
+                    </svg>
+                    {{ post.published_at|date:"d M Y" }}
+                </span>
+                <p class="mb-3 mt-2 font-normal text-gray-700 dark:text-gray-400">{{ post.summary|slice:":200" }}</p>
+                <div class="mb-3">
+                    {% for tag in post.tag.all %}
+                        <a href="#">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">{{ tag.title }}</span>
+                        </a>
+                    {% endfor %}
+                </div>
+                <div class="flex justify-between mt-5">
+                    <div class="flex items-center space-x-4">
+                        {% if post.author.profile.avatar %}
+                            <img class="w-8 h-8 rounded-full" src="{{ post.author.profile.avatar.url }}" alt="">
+                        {% else %}
+                            <img class="w-8 h-8 rounded-full" src="{% static 'images/default-Profile-Picture.png' %}" alt="">
+                        {% endif %}
+                        <div class="text-sm dark:text-white">
+                            <a href="#" class="font-bold text-blue-600/100 dark:text-blue-500/100">{{ post.author.first_name }}</a>
+                            <div class="font-medium text-gray-500 dark:text-gray-400">Joined in {{ post.author.date_joined|date:"M Y" }}</div>
+                        </div>
+                    </div>
+                    <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Read more
+                         <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+{% endblock content %}

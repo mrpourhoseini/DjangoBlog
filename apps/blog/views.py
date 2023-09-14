@@ -1,6 +1,13 @@
 from django.shortcuts import render
+from .models import Post
 
 
 # Create your views here.
-def index(request):
-    return render(request, 'blog/index.html')
+def all_posts(request):
+    posts = Post.objects.filter(status='Publish')
+
+    context = {
+        'posts': posts
+    }
+
+    return render(request, 'blog/posts.html', context)
