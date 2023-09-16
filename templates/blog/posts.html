@@ -39,7 +39,7 @@
                             <img class="w-8 h-8 rounded-full" src="{% static 'images/default-Profile-Picture.png' %}" alt="">
                         {% endif %}
                         <div class="text-sm dark:text-white">
-                            <a href="#" class="font-bold text-blue-600/100 dark:text-blue-500/100">{{ post.author.first_name }}</a>
+                            <a href="{% url 'author_detail' post.author.id %}" class="font-bold text-blue-600/100 dark:text-blue-500/100">{{ post.author.first_name }}</a>
                             <div class="font-medium text-gray-500 dark:text-gray-400">Joined in {{ post.author.date_joined|date:"M Y" }}</div>
                         </div>
                     </div>
