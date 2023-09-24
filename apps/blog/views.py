@@ -9,11 +9,13 @@ def home(request):
     posts = Post.objects.filter(status='Publish')[:3]
     authors = User.objects.all()[:5]
     categories = Category.objects.filter(status=True).annotate(num_posts=Count('post')).order_by('-num_posts')[:10]
+    comments = Comment.objects.filter(published=True).order_by('-created_at')[:5]
 
     context = {
         'posts': posts,
         'authors': authors,
-        'categories': categories
+        'categories': categories,
+        'comments': comments
 
     }
 

@@ -103,7 +103,39 @@
                   {% endfor %}
                 </ul>
             </div>
-            <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12">
+            <div class=" rounded-lg p-4 md:p-8">
+                <div class="flex justify-center mb-4">
+                    <h1 class="text-2xl font-extrabold leading-none tracking-tight text-gray-900 dark:text-white">The latest <span class="underline underline-offset-3 decoration-2 decoration-blue-700 dark:decoration-blue-600"> Comments</span></h1>
+                </div>
+
+                <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                    {% for comment in comments %}
+                        <li class="py-3 sm:py-4">
+                          <div class="flex items-center space-x-4">
+                             <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full"
+                                    {% if comment.user.profile.avatar %}
+                                        src="{{ comment.user.profile.avatar.url }}"
+                                    {% else %}
+                                        src="{% static 'images/default-Profile-Picture.png' %}"
+                                    {% endif %}
+                                     alt="Neil image">
+                             </div>
+                             <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    <a href="{% url 'author_detail' comment.user.id %}">
+                                        {{ comment.user.first_name }}
+                                    </a>
+                                </p>
+                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                    <a href="{% url 'post_detail' comment.post.slug %}">{{ comment.content }}</a>
+                                </p>
+                             </div>
+
+                          </div>
+                       </li>
+                    {% endfor %}
+                </ul>
 
 
             </div>
