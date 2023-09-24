@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}| categories{% endblock %}
+
+{% block content %}
+
+    <div class="grid mt-8 gap-5 dark:border-gray-700 md:mb-12 md:grid-cols-4">
+
+        {% for category in categories %}
+
+            <div class="flex items-center justify-between max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <a href="{% url 'category_detail' category.slug %}">
+                    <h5 class="text-xl font-semibold text-blue-600/100 dark:text-blue-500/100">{{ category.title }}</h5>
+                </a>
+                <p class="">
+                    <span class="text-4xl font-bold text-gray-900 dark:text-white">{{ category.post_set.count }}</span> post{{ category.post_set.count|pluralize }}
+                </p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

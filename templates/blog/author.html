@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% load static %}
+
+{% block title %}| {{ author.get_full_name }}{% endblock %}
+
 {% block content %}
 
     <section class="bg-white dark:bg-gray-900">

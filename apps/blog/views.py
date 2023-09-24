@@ -44,3 +44,25 @@ def post_detail(request, slug):
     }
 
     return render(request, 'blog/post.html', context)
+
+
+def all_category(request):
+    categories = Category.objects.filter(status=True)
+
+    context = {
+        'categories': categories
+    }
+
+    return render(request, 'blog/categories.html', context)
+
+
+def category_detail(request, slug):
+    category = Category.objects.get(slug=slug)
+    posts = Post.objects.filter(status='Publish', category=category)
+
+    context = {
+        'category': category,
+        'posts': posts
+    }
+
+    return render(request, 'blog/category.html', context)
