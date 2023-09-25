@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from .models import Post, Comment, Category
@@ -66,3 +66,18 @@ def category_detail(request, slug):
     }
 
     return render(request, 'blog/category.html', context)
+
+
+def search(request):
+    if request.method == 'POST':
+        search_query = request.POST['search_query']
+        posts = Post.objects.filter(Q(title__contains=search_query) | Q(category__title__contains=search_query))
+
+        context = {
+            'query': search_query,
+            'posts': posts
+        }
+
+        return render(request, 'blog/search.html', context)
+    else:
+        return render(request, 'blog/search.html',{})
