@@ -11,13 +11,13 @@
 
   <h3 align="center">A simple blog with Django framework</h3>
 
-  <h3 align="center">
+  <div align="center">
 
   ![python](https://img.shields.io/badge/python-v3.11.5-asd?logo=python&logoColor=%232b5b84&label=python&labelColor=%23ffd343&color=%232b5b84)
   ![django](https://img.shields.io/badge/django-v4.2.5-a?logo=django&logoColor=%23092E20&label=django&labelColor=%23fff&color=%23092E20)
   ![tailwind](https://img.shields.io/badge/tailwindcss-v3.3.3-a?logo=tailwindcss&logoColor=%2306B6D4&label=tailwindcss&labelColor=%23fff&color=%2306B6D4)
   
-  </h3>
+  </div>
 </p>
 
 
