@@ -17,7 +17,7 @@
 
         <div>
             {% for category in post.category.all %}
-                <a href="#">
+                <a href="{% url 'category_detail' category.slug %}">
                     <span class="bg-purple-100 text-purple-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">{{ category.title }}</span>
                 </a>
             {% endfor %}
@@ -27,7 +27,7 @@
     <section class="bg-white dark:bg-gray-900">
         <div class="px-4 mx-auto max-w-screen-xl lg:py-4">
 
-            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg mb-8">
+            <div class="mb-8">
                 <img class="rounded-lg" src="{{ post.thumbnail.url }}" alt="image description">
             </div>
 
@@ -67,15 +67,19 @@
                     <div class="flex justify-between items-center mb-6">
                     <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion ({{ comments.count }})</h2>
                     </div>
-                    <form class="mb-2">
-                    <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                        <label for="comment" class="sr-only">Your comment</label>
-                        <textarea id="comment" rows="6"
-                            class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
-                            placeholder="Write a comment..." required></textarea>
+                    <form class="mb-2" method="POST">
+                    {% csrf_token %}
+{#                    <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">#}
+{#                        <label for="comment" class="sr-only">Your comment</label>#}
+{#                        <textarea id="comment" rows="6"#}
+{#                            class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"#}
+{#                            placeholder="Write a comment..." required></textarea>#}
+{#                    </div>#}
+                    <div class="mb-2">
+                        {{ form }}
                     </div>
                     <button type="submit"
-                        class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                        class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
                         Post comment
                     </button>
                     </form>

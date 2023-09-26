@@ -1,6 +1,9 @@
 from django.db.models import Count, Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from .forms import CommentForm
+from django.contrib import messages
 from .models import Post, Comment, Category
 
 
@@ -32,15 +35,28 @@ def all_posts(request):
     return render(request, 'blog/posts.html', context)
 
 
+@login_required
 def post_detail(request, slug):
     post = Post.objects.get(slug=slug)
     last_posts = Post.objects.filter(status='Publish')[:5]
     comments = Comment.objects.filter(post__slug=slug, published=True)
 
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.user = request.user
+            new_comment.post = post
+            new_comment.published = False
+            new_comment.save()
+            return redirect('post_detail', post.slug)
+    form = CommentForm()
+
     context = {
         'post': post,
         'last_posts': last_posts,
-        'comments': comments
+        'comments': comments,
+        'form': form
     }
 
     return render(request, 'blog/post.html', context)
@@ -80,4 +96,4 @@ def search(request):
 
         return render(request, 'blog/search.html', context)
     else:
-        return render(request, 'blog/search.html',{})
+        return render(request, 'blog/search.html', {})
